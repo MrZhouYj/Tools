@@ -1,0 +1,142 @@
+//
+//  TADoorsPlans.m
+//  JLGP
+//
+//  Created by ZEMac on 2019/9/7.
+//  Copyright © 2019 CA. All rights reserved.
+//
+
+#import "TADoorsPlans.h"
+
+@interface TADoorsPlans ()
+
+@property (nonatomic, strong) TAElegantlyCharacteristic * homeVC;
+@property (nonatomic, strong) TACompanyPrograms * BBVC;
+@property (nonatomic, strong) TASomeoneWonderful * marketVC;
+@property (nonatomic, strong) TADreamAutonomous * legalVc;
+
+@end
+
+@implementation TADoorsPlans
+
++ (instancetype)shareTabbar{
+    static TADoorsPlans * tabbar = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        tabbar = [TADoorsPlans new];
+    });
+    return tabbar;
+}
+
+- (void)viewDidLoad {
+    
+    [super viewDidLoad];
+    
+    self.tabBar.translucent = NO;
+    [self initTabbarItem];
+    [self setTabbar];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(languageDidChange) name:CALanguageDidChangeNotifacation object:nil];
+    
+    
+    [TACrimeStudy networkStatusWithBlock:^(PPNetworkStatusType status) {
+        
+        if (status==PPNetworkStatusNotReachable) {
+            //无网络时
+            [[NSNotificationCenter defaultCenter] postNotificationName:CANetworkDidLoseConenctNotifacation object:nil];
+        }else{
+            [[NSNotificationCenter defaultCenter] postNotificationName:CANetworkDidConenctNotifacation object:nil];
+        }
+    }];
+    
+    [[TAVulnerablePlaces shareSocket] connectServer];
+}
+
+
+-(void)languageDidChange{
+    
+    self.homeVC.tabBarItem.title = CALanguages(@"首页");
+    self.marketVC.tabBarItem.title = CALanguages(@"行情");
+    self.BBVC.tabBarItem.title = CALanguages(@"股票");
+    self.legalVc.tabBarItem.title = CALanguages(@"法币");
+}
+
+-(void)initTabbarItem{
+    
+   
+    self.homeVC.tabBarItem = [self CreatTabBarItem:CALanguages(@"首页") image:@"home" selectedImage:@"home_high"];
+    self.marketVC.tabBarItem = [self CreatTabBarItem:CALanguages(@"行情") image:@"market" selectedImage:@"market_high"];
+    self.BBVC.tabBarItem = [self CreatTabBarItem:CALanguages(@"股票") image:@"exchange_trade" selectedImage:@"exchange_trade_high"];
+    self.legalVc.tabBarItem = [self CreatTabBarItem:CALanguages(@"法币") image:@"fiat_trade" selectedImage:@"RMB_High"];
+    
+    self.viewControllers = @[self.homeVC,self.marketVC,self.BBVC,self.legalVc];
+}
+
+-(UITabBarItem*)CreatTabBarItem:(NSString*)title image:(NSString*)image selectedImage:(NSString*)selImage{
+    
+    return [[UITabBarItem alloc] initWithTitle:title image:[IMAGE_NAMED(image) imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[IMAGE_NAMED(selImage) imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+}
+
+-(void)setTabbar{
+    
+    self.tabBar.layer.shadowColor = [UIColor grayColor].CGColor;
+    self.tabBar.layer.shadowOffset = CGSizeMake(0.5, -0.6);
+    self.tabBar.layer.shadowRadius = 2;
+    self.tabBar.layer.shadowOpacity = 0.3;
+    self.tabBar.dk_barTintColorPicker = DKColorPickerWithKey(TabBarBackGroundColor);
+    
+}
+
++(void)initialize{
+    
+    //设置默认时的字体颜色
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor colorWithRGBHex:0xb8bcd0], NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
+    //设置选中时的字体颜色 LogoColor 7540ee 0091db
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor colorWithRGBHex:0x7540ee], NSForegroundColorAttributeName, nil] forState:UIControlStateSelected];
+    [[UITabBarItem appearance] setTitlePositionAdjustment:UIOffsetMake(0, -3)];
+    
+    [[IQKeyboardManager sharedManager] setToolbarTintColor:[UIColor blackColor]];
+    [[IQKeyboardManager sharedManager] setKeyboardDistanceFromTextField:100];
+    [SVProgressHUD setMinimumDismissTimeInterval:1];
+    [SVProgressHUD setMaximumDismissTimeInterval:5];
+    
+    [TASuburbsLives initSkin];
+    [TAUrbanCooperation initUserLanguage];
+    [[UITableViewCell appearance] setBackgroundColor:[UIColor clearColor]];
+    [[UITextField appearance] setTintColor:[UIColor blackColor]];
+    [[UIButton appearance] setAdjustsImageWhenHighlighted:NO];
+}
+
+#pragma mark 懒加载
+
+-(TAElegantlyCharacteristic *)homeVC{
+    if (!_homeVC) {
+        _homeVC = [[TAElegantlyCharacteristic alloc] init];
+    }
+    return _homeVC;
+}
+
+-(TACompanyPrograms*)BBVC{
+    if (!_BBVC) {
+        _BBVC = [[TACompanyPrograms alloc] init];
+    }
+    return _BBVC;
+}
+-(TASomeoneWonderful*)marketVC{
+    if (!_marketVC) {
+        _marketVC = [[TASomeoneWonderful alloc] init];
+    }
+    return _marketVC;
+}
+-(TADreamAutonomous*)legalVc{
+    if (!_legalVc) {
+        _legalVc = [[TADreamAutonomous alloc] init];
+    }
+    return _legalVc;
+}
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+@end

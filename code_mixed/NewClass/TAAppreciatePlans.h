@@ -1,0 +1,60 @@
+//
+//  TAAppreciatePlans.h
+//  CADAE-IOS
+//
+//  Created by  on 2019/11/14.
+//  Copyright © 2019 CA. All rights reserved.
+//
+
+#import "TAThoseSnowing.h"
+
+FOUNDATION_EXPORT NSString * _Nullable const TAAppreciatePlansDidSignInSuccessNotifacation;//登录成功通知
+FOUNDATION_EXPORT NSString * _Nullable const TAAppreciatePlansDidSignOutSuccessNotifacation;//登出成功通知
+FOUNDATION_EXPORT NSString * _Nullable const TAAppreciatePlansDidChangedUserInfomationNotifacation;//
+
+NS_ASSUME_NONNULL_BEGIN
+
+@interface TAAppreciatePlans : TAThoseSnowing
+
+@property (nonatomic, copy) NSString * app_token;
+@property (nonatomic, copy) NSString * public_key;
+@property (nonatomic, copy) NSString * private_key;
+@property (nonatomic, copy) NSString * nick_name;
+@property (nonatomic, copy) NSString * uid;
+@property (nonatomic, copy) NSString * real_name;
+@property (nonatomic, copy) NSString * identity_state;
+@property (nonatomic, copy) NSString * identity_state_name;
+@property (nonatomic, copy) NSString * account;
+@property (nonatomic, copy) NSString * country;
+@property (nonatomic, copy) NSString * id_card_number;
+@property (nonatomic, copy) NSString * id_card_number_not_hide;
+
+@property (nonatomic, copy) NSString * invitation_code;
+@property (nonatomic, copy) NSString * qrcode;
+@property (nonatomic, copy) NSString * test;
+@property (nonatomic, copy) NSString * have_agent_or_not;
+@property (nonatomic, copy) NSString * have_agent_code_or_not;
+@property (nonatomic, assign) BOOL is_agent;//是否选择了经纪人
+
+@property (nonatomic, assign) BOOL is_identified_success;//是否实名认证
+@property (nonatomic, assign) BOOL is_read_my_identified_fail;
+
+@property (nonatomic, assign) BOOL is_email_binded;
+@property (nonatomic, assign) BOOL is_mobile_binded;
+@property (nonatomic, assign) BOOL isAvaliable;//当前用户是否有效
+
++(instancetype)currentUser;
+
+-(void)creatUser:(NSDictionary*)dic;
+
+-(void)updateUserInfo:(NSDictionary*)dic;
+
+-(void)signOutCurrentUser;
+
+-(void)getUserDetails:(void(^)(void))successBlock;
+
+-(void)getUserInvitationCode:(void(^)(void))successBlock;
+
+@end
+
+NS_ASSUME_NONNULL_END
